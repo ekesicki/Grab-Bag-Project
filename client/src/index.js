@@ -1,13 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Device from './Device';
 import reportWebVitals from './reportWebVitals';
 
+const mainElement = (
+  <div className="container">
+    <Device greeting = "Hello"></Device>
+    <Device greeting = "Howdy"></Device>
+    <Device greeting = "What's up"></Device>
+  </div>
+)
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  mainElement,
   document.getElementById('root')
 );
 
