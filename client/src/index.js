@@ -5,24 +5,24 @@ import Device from './Device';
 import reportWebVitals from './reportWebVitals';
 
 const allGreetings = [
-  {value: "Hello"},
-  {value: "Howdy"},
-  {value: "Salutations"},
-  {value: "What's up"},
-  {value: "Howie Doin"},
-  {value: "Hey hey hey"}
+  {id: "a", value: "Hello"},
+  {id: "b", value: "Howdy"},
+  {id: "c", value: "What's up"},
 ]
 
-function App() {
+function App () {
   const [greetings, setGreetings] = React.useState(allGreetings);
+
+  fetch("https://www.ifixit.com/api/2.0/wikis/CATEGORY?offset=0&limit=10")
+    .then(response => response.json(0))
+    .then(data => console.log(data) /*here is where we can manipulate the returned data*/);
 
   return (
     <div>
       <ul>
-        {greetings.map(greeting => (
-          <li>
-            {greeting.value}, I'm in a list tag! 
-          </li>
+        {greetings.map(curGreeting => (
+          <Device key = {curGreeting.id} greeting = {curGreeting.value}>
+          </Device>
         ))}
       </ul>
     </div>
@@ -36,14 +36,6 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-/*const mainElement = (
-    <div className="container">
-      <Device greeting = "Hello"></Device>
-      <Device greeting = "Howdy"></Device>
-      <Device greeting = "What's up"></Device>
-    </div>
-  )*/
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

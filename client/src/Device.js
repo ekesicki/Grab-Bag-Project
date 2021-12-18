@@ -7,7 +7,7 @@ import React from "react";
 
 
 function Device ({greeting}) {
-    return <div className = "device">{greeting}, here is an item div. </div>;
+    return <div className = "device">{greeting}, here is a device. </div>;
 }
 
 
