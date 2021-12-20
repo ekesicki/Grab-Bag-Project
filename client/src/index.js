@@ -15,7 +15,15 @@ function App () {
 
   fetch("https://www.ifixit.com/api/2.0/wikis/CATEGORY?offset=0&limit=10")
     .then(response => response.json(0))
-    .then(data => console.log(data) /*here is where we can manipulate the returned data*/);
+    .then(data => {
+      /*here is where we can manipulate the returned data*/
+      //const currentDevices = data.keys();
+      //console.log(typeof(currentDevices));
+      //console.log(currentDevices);
+      data.forEach(deviceEntry => {
+        console.log(deviceEntry.display_title);
+      });
+    });
 
   return (
     <div>
