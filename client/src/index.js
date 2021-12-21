@@ -10,21 +10,9 @@ function App () {
   return (
     <div>
       <Device></Device>
-      <Device></Device>
-      <Device></Device>
     </div>
   );
 
-/*
-    <div>
-      <ul>
-        {allDevices.map(currentDevice => (
-          <Device device = {currentDevice}>
-          </Device>
-        ))}
-      </ul>
-    </div>
-*/
 }
   
 ReactDOM.render(
