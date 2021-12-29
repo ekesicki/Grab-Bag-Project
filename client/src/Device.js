@@ -14,10 +14,10 @@ function Device (props) {
     // I think the ? mark means that it will only load the .standard if there's something to load
 
     return (
-        <span className = "device" key = {props?.wikiid}>
-            <img src = {props.image?.standard} alt = "Error Loading Item"></img>
+        <div className = "device" key = {props?.wikiid}>
+            <img src = {props.image?.standard} alt = "Error Loading Device"></img>
             <li key = {props?.wikiid}>{props?.display_title}</li>
-        </span>
+        </div>
     );
 }
 

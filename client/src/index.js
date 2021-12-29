@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Device from './Device';
 import reportWebVitals from './reportWebVitals';
+import Device from './Device';
+import GrabBag from './GrabBag';
 
 
 
@@ -14,7 +15,7 @@ function App () {
 
   const [deviceList, setDeviceList] = React.useState([]);
 
-  const [keepLoading, setKeepLoading] = React.useState(true);
+  const [keepLoading, setKeepLoading] = React.useState(false);
 
   // handleScroll triggers when we scroll down the page
   //   It calculates if we have scrolled past the bottom of the page
@@ -49,7 +50,7 @@ function App () {
   React.useEffect(() => {
     // Will fetch one device and set state with that device
     // Trying to make a custom device object
-    
+    fetchAndSetOneDevice();
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
 
 
@@ -57,13 +58,16 @@ function App () {
 
   return (
     <div>
-      {deviceList.length ? 
-        (deviceList.map(deviceEntry => {
-          console.log("In Mapping Function");
-          console.log(deviceList);
-          return <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
-        }))
-        : "No Items Loaded Yet"}
+      <GrabBag></GrabBag>
+      <ul>
+        {deviceList.length ? 
+          (deviceList.map(deviceEntry => {
+            console.log("In Mapping Function");
+            console.log(deviceList);
+            return <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
+          }))
+          : "No Items Loaded Yet"}
+      </ul>
     </div>
   );
 
