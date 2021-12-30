@@ -12,13 +12,13 @@ import GrabBag from './GrabBag';
 function App () {
 
 
-  const [deviceOffset, setDeviceOffset] = React.useState(0);
+  const [deviceOffset, setDeviceOffset] = React.useState(JSON.parse(window.localStorage.getItem('currentOffset')) || 0);
 
-  const [deviceList, setDeviceList] = React.useState([]);
+  const [deviceList, setDeviceList] = React.useState(JSON.parse(window.localStorage.getItem('storedDevices')) || []);
 
   const [keepLoading, setKeepLoading] = React.useState(false);
 
-  const [grabBagList, setGrabBagList] = React.useState([]);
+  const [grabBagList, setGrabBagList] = React.useState(JSON.parse(window.localStorage.getItem('storedGrabBag')) || []);
 
   // handleScroll triggers when we scroll down the page
   //   It calculates if we have scrolled past the bottom of the page
@@ -60,6 +60,11 @@ function App () {
     fetchAndSetOneDevice();
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
 
+    // Adding arrays and offset to local storage
+    window.localStorage.setItem('storedDevices', JSON.stringify(deviceList));
+    window.localStorage.setItem('storedGrabBag', JSON.stringify(grabBagList));
+    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
+
     console.log("Grab Bag List:");
     console.log(grabBagList);
     console.log("Device List:");
@@ -76,11 +81,13 @@ function App () {
     // and remove it from the device list
     if (result.destination.droppableId = "grabBag") {
       const currentDevices = Array.from(deviceList);
-      console.log(currentDevices);
+      //console.log(currentDevices);
       const movedDevice = currentDevices.find(e => e?.wikiid === parseInt(result.draggableId));
-      console.log("Moved Device:");
-      console.log(movedDevice);
+      //console.log("Moved Device:");
+      //console.log(movedDevice);
       setGrabBagList((grabBagList) => [...grabBagList, movedDevice]);
+
+      // filter out the movedDevice from the deviceList.
       setDeviceList((deviceList) => deviceList.filter(e => e?.wikiid !== movedDevice.wikiid))
     }
 
