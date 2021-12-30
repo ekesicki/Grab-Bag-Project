@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import Device from './Device';
 import GrabBag from './GrabBag';
 
@@ -17,6 +18,8 @@ function App () {
 
   const [keepLoading, setKeepLoading] = React.useState(false);
 
+  const [grabBagList, setGrabBagList] = React.useState([]);
+
   // handleScroll triggers when we scroll down the page
   //   It calculates if we have scrolled past the bottom of the page
   //   Then it sets keepLoading to True.
@@ -25,6 +28,7 @@ function App () {
   const handleScroll = () => {
     let userScrollHeight = window.innerHeight + window.scrollY;
     let windowBottomHeight = document.documentElement.offsetHeight;
+    
     if (userScrollHeight >= windowBottomHeight) {
       setKeepLoading(true);
     }
@@ -35,13 +39,15 @@ function App () {
   const fetchAndSetOneDevice = async() => {
     const requestAddress = 
         "https://www.ifixit.com/api/2.0/wikis/CATEGORY?offset=" + deviceOffset + "&limit=1";
-
-    
+ 
     fetch(requestAddress)
     .then(r => r.json())
     .then(response => {
       setDeviceOffset((deviceOffset) => deviceOffset + 1);
-      setDeviceList((deviceList) => [...deviceList, response[0]]);
+
+      if (response[0] !== undefined) {
+        setDeviceList((deviceList) => [...deviceList, response[0]]);
+      }
       setKeepLoading((keepLoading) => false);
     });
 
@@ -50,25 +56,67 @@ function App () {
   React.useEffect(() => {
     // Will fetch one device and set state with that device
     // Trying to make a custom device object
+    
     fetchAndSetOneDevice();
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
+
+    console.log("Grab Bag List:");
+    console.log(grabBagList);
+    console.log("Device List:");
+    console.log(deviceList);
 
 
   }, [keepLoading]); 
 
+  function handleOnDragEnd (result) {
+    // If we drag something to a non-droppable area, just return
+    if (!result.destination) return;
+
+    // If we drop into the grab bag, add the device to the bag list 
+    // and remove it from the device list
+    if (result.destination.droppableId = "grabBag") {
+      const currentDevices = Array.from(deviceList);
+      console.log(currentDevices);
+      const movedDevice = currentDevices.find(e => e?.wikiid === parseInt(result.draggableId));
+      console.log("Moved Device:");
+      console.log(movedDevice);
+      setGrabBagList((grabBagList) => [...grabBagList, movedDevice]);
+      setDeviceList((deviceList) => deviceList.filter(e => e?.wikiid !== movedDevice.wikiid))
+    }
+
+  }
+
   return (
-    <div>
-      <GrabBag></GrabBag>
-      <ul>
-        {deviceList.length ? 
-          (deviceList.map(deviceEntry => {
-            console.log("In Mapping Function");
-            console.log(deviceList);
-            return <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
-          }))
-          : "No Items Loaded Yet"}
-      </ul>
-    </div>
+    <>
+      <DragDropContext onDragEnd = {handleOnDragEnd}>
+        <GrabBag></GrabBag>
+          <Droppable droppableId='devices'>
+            {(provided) => (
+              <span {...provided.droppableProps} ref = {provided?.innerRef}>
+                <ul className = "deviceList">
+                  {deviceList.length ? 
+                    (deviceList.map((deviceEntry, index) => {
+                      // console.log("In Mapping Function");
+                      // console.log(deviceList);
+                      return (
+                        <Draggable key = {deviceEntry?.wikiid} draggableId = {JSON.stringify(deviceEntry?.wikiid)} index = {index}>
+                          {(provided) => (
+                            <div {...provided.draggableProps} {...provided.dragHandleProps} ref = {provided.innerRef}>
+                              <li >
+                                <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
+                              </li>
+                            </div>
+                          )}
+                        </Draggable>
+                      )
+                    }))
+                  : "No Items Loaded Yet"}
+                </ul>
+              </span>
+            )}
+          </Droppable>
+      </DragDropContext>
+    </>
   );
 
 /*

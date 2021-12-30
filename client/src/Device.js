@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 // We want each grab bag item to be its own element.
 // Want to be able to have each device make its own
@@ -14,10 +16,13 @@ function Device (props) {
     // I think the ? mark means that it will only load the .standard if there's something to load
 
     return (
-        <div className = "device" key = {props?.wikiid}>
-            <img src = {props.image?.standard} alt = "Error Loading Device"></img>
-            <li key = {props?.wikiid}>{props?.display_title}</li>
-        </div>
+
+        
+            <div className = "device" >
+                <img src = {props.image?.standard} alt = "Error Loading Device"></img>
+                <li key = {props?.wikiid}>{props?.display_title}</li>
+            </div>
+            
     );
 }
 
