@@ -1,7 +1,7 @@
 # Grab-Bag-Project
 Grab Bag Project for Dozuki
 Creating a website to allow users to categorize their items
-
+ - Uses react-beautiful-dnd which can be found at https://github.com/atlassian/react-beautiful-dnd
 Usage:
 1. Clone this repository
 2. Enter ./client/src
