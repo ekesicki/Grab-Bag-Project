@@ -14,6 +14,6 @@ Devices are displayed as a list of images with labels. You can drag devices onto
 
 Known Issues:
 1. More devices cannot be loaded until you minimize the window to the point where you can scroll
-3. Devices are loading only in a single column
-4. Grab Bag is above the device list, making it hard to add devices further down
-5. Looks very basic
+2. Devices are loading only in a single column
+3. Grab Bag is above the device list, making it hard to add devices further down
+4. Looks very basic
