@@ -71,7 +71,8 @@ function App () {
     console.log(deviceList);
 
 
-  }, [keepLoading]); 
+  }, [keepLoading, grabBagList]); 
+
 
   function handleOnDragEnd (result) {
     // If we drag something to a non-droppable area, just return

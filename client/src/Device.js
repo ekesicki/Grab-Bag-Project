@@ -17,8 +17,8 @@ function Device (props) {
 
     return (
         <div className = "device" >
-            <img src = {props.image?.standard} alt = "Error Loading Device"></img>
-            <li key = {props?.wikiid}>{props?.display_title}</li>
+            <img src = {props?.image?.standard} alt = "Error Loading Device"></img>
+            <label key = {props?.wikiid}>{props?.display_title}</label>
         </div> 
     );
 }
