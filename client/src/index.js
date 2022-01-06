@@ -20,6 +20,8 @@ function App () {
 
   const [grabBagList, setGrabBagList] = React.useState(JSON.parse(window.localStorage.getItem('storedGrabBag')) || []);
 
+  //const [canScroll, setCanScroll] = React.useState(false);
+
   // handleScroll triggers when we scroll down the page
   //   It calculates if we have scrolled past the bottom of the page
   //   Then it sets keepLoading to True.
@@ -28,10 +30,12 @@ function App () {
   const handleScroll = () => {
     let userScrollHeight = window.innerHeight + window.scrollY;
     let windowBottomHeight = document.documentElement.offsetHeight;
-    
+
+    //console.log("scroll height: " + userScrollHeight);
+
     if (userScrollHeight >= windowBottomHeight) {
       setKeepLoading(true);
-    }
+    } 
   };
 
 
@@ -50,7 +54,22 @@ function App () {
       }
       setKeepLoading((keepLoading) => false);
     });
+  }
 
+  const fetchAndSetDevices = async(numDevices) => {
+    const requestAddress = 
+        "https://www.ifixit.com/api/2.0/wikis/CATEGORY?offset=" + deviceOffset + "&limit=1";
+ 
+    fetch(requestAddress)
+    .then(r => r.json())
+    .then(response => {
+      setDeviceOffset((deviceOffset) => deviceOffset + 1);
+
+      if (response[0] !== undefined) {
+        setDeviceList((deviceList) => [...deviceList, response[0]]);
+      }
+      setKeepLoading((keepLoading) => false);
+    });
   }
 
   React.useEffect(() => {
@@ -58,6 +77,7 @@ function App () {
     // Trying to make a custom device object
     
     fetchAndSetOneDevice();
+
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
 
     // Adding arrays and offset to local storage
@@ -65,13 +85,14 @@ function App () {
     window.localStorage.setItem('storedGrabBag', JSON.stringify(grabBagList));
     window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
 
-    console.log("Grab Bag List:");
+  /*   console.log("Grab Bag List:");
     console.log(grabBagList);
     console.log("Device List:");
-    console.log(deviceList);
+    console.log(deviceList); */
 
 
   }, [keepLoading, grabBagList]); 
+
 
 
   function handleOnDragEnd (result) {
@@ -97,11 +118,12 @@ function App () {
   return (
     <>
       <DragDropContext onDragEnd = {handleOnDragEnd}>
-        <GrabBag></GrabBag>
+        <GrabBag {...[grabBagList]}></GrabBag>
           <Droppable droppableId='devices'>
             {(provided) => (
               <span {...provided.droppableProps} ref = {provided?.innerRef}>
                 <ul className = "deviceList">
+                <h1>Here's the List of Devices</h1>
                   {deviceList.length ? 
                     (deviceList.map((deviceEntry, index) => {
                       // console.log("In Mapping Function");
@@ -110,7 +132,7 @@ function App () {
                         <Draggable key = {deviceEntry?.wikiid} draggableId = {JSON.stringify(deviceEntry?.wikiid)} index = {index}>
                           {(provided) => (
                             <div {...provided.draggableProps} {...provided.dragHandleProps} ref = {provided.innerRef}>
-                              <li >
+                              <li>
                                 <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
                               </li>
                             </div>

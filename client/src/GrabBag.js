@@ -9,15 +9,31 @@ import Device from './Device';
 
 function GrabBag (props) {
 
+    const grabBagList = props[0];
+
     return (
         <Droppable droppableId="grabBag">
             {(provided) => (
-                <span className = "grabBag" {...provided.droppableProps} ref = {provided?.innerRef}>
+                <span className = "GrabBag" {...provided.droppableProps} ref = {provided?.innerRef}>
                     <img src = {"https://www.pngmart.com/files/7/School-Bag-PNG-Image.png"} 
                         alt = "Error Loading Bag"
                         style = {{width: 200, height: 200}}>
                     </img>
-                    <li>Grab Bag</li>   
+                    {console.log("grabBagList:")}
+                    {console.log(grabBagList)}
+                    {console.log("grabBagList.length:")}
+                    {console.log(grabBagList)}
+                    <h1>Here's the List of Grab Bag Devices</h1>
+                    {grabBagList?.length ? 
+                        (grabBagList.map(deviceEntry => {
+                            // console.log("In Grab Bag Mapping Function");
+                            // console.log(grabBagList);
+                            return (
+                                <li>
+                                    <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
+                                </li>)
+                        }))
+                        : "No to props.length"}
                 </span>
             )}
         </Droppable>
@@ -26,13 +42,18 @@ function GrabBag (props) {
 
 /* // Logic for loading a list of items from the main app
 
-{props.grabBagList.length ? 
-    (props.grabBagList.map(deviceEntry => {
-        // console.log("In Grab Bag Mapping Function");
-        // console.log(grabBagList);
-        return <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
-    }))
-    : "No Items In Bag Yet"}
+                    {console.log("GrabBag props:")}
+                    {console.log(props)}
+                    {props.length ? 
+                        (props.map(deviceEntry => {
+                            // console.log("In Grab Bag Mapping Function");
+                            // console.log(grabBagList);
+                            return (
+                                <li>
+                                    <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
+                                </li>)
+                        }))
+                        : "No Items In Bag Yet"}
 */
 
 export default GrabBag;

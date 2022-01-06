@@ -9,8 +9,9 @@ Usage:
 4. Shrink the window size and scroll down to start infinite scrolling functionality.
  
 Devices are displayed as a list of images with labels. You can drag devices onto the grab bag 
-  to store them there. Items stored in the grab bag will be remembered on refresh. 
-  You can check what items are in the grab bag in Local Storage under the Application tab in the Inspect window. 
+  to store them there. Items stored in the grab bag will be remembered on refresh.
+  Items in the Grab Bag will be displayed before the list of Devices.  
+  You can also check what items are in the grab bag and what devices have been loaded in Local Storage under the Application tab in the Inspect window. 
 
 Known Issues:
 1. More devices cannot be loaded until you minimize the window to the point where you can scroll
