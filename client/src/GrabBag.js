@@ -19,10 +19,10 @@ function GrabBag (props) {
                         alt = "Error Loading Bag"
                         style = {{width: 200, height: 200}}>
                     </img>
-                    {console.log("grabBagList:")}
+                    {/* {console.log("grabBagList:")}
                     {console.log(grabBagList)}
                     {console.log("grabBagList.length:")}
-                    {console.log(grabBagList)}
+                    {console.log(grabBagList)} */}
                     <h1>Here's the List of Grab Bag Devices</h1>
                     {grabBagList?.length ? 
                         (grabBagList.map(deviceEntry => {
@@ -33,7 +33,7 @@ function GrabBag (props) {
                                     <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
                                 </li>)
                         }))
-                        : "No to props.length"}
+                        : "Bag Empty!"}
                 </span>
             )}
         </Droppable>

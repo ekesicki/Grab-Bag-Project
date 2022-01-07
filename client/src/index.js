@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Device from './Device';
 import GrabBag from './GrabBag';
+
 
 
 
@@ -16,7 +18,7 @@ function App () {
 
   const [deviceList, setDeviceList] = React.useState(JSON.parse(window.localStorage.getItem('storedDevices')) || []);
 
-  const [keepLoading, setKeepLoading] = React.useState(false);
+  const [keepLoading, setKeepLoading] = React.useState(true);
 
   const [grabBagList, setGrabBagList] = React.useState(JSON.parse(window.localStorage.getItem('storedGrabBag')) || []);
 
@@ -58,17 +60,24 @@ function App () {
 
   const fetchAndSetDevices = async(numDevices) => {
     const requestAddress = 
-        "https://www.ifixit.com/api/2.0/wikis/CATEGORY?offset=" + deviceOffset + "&limit=1";
+        "https://www.ifixit.com/api/2.0/wikis/CATEGORY?offset=" + deviceOffset + "&limit=" + numDevices;
  
     fetch(requestAddress)
     .then(r => r.json())
     .then(response => {
-      setDeviceOffset((deviceOffset) => deviceOffset + 1);
+      setDeviceOffset((deviceOffset) => deviceOffset + numDevices);
 
-      if (response[0] !== undefined) {
-        setDeviceList((deviceList) => [...deviceList, response[0]]);
-      }
-      setKeepLoading((keepLoading) => false);
+      console.log("Response for fetch " + numDevices + " devices:");
+      console.log(response);
+      
+        // filter out undefined elements
+        response.filter(e => e !== undefined);
+
+        // Add all devices to the deviceList in one call
+        setDeviceList((deviceList) => [...deviceList, ...response]);
+
+        setKeepLoading((keepLoading) => false);
+      
     });
   }
 
@@ -77,6 +86,8 @@ function App () {
     // Trying to make a custom device object
     
     fetchAndSetOneDevice();
+    //fetchAndSetDevices(5);
+
 
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
 
@@ -86,9 +97,9 @@ function App () {
     window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
 
   /*   console.log("Grab Bag List:");
-    console.log(grabBagList);
+    console.log(grabBagList);*/
     console.log("Device List:");
-    console.log(deviceList); */
+    console.log(deviceList); 
 
 
   }, [keepLoading, grabBagList]); 
