@@ -4,6 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'react-bootstrap';
 import Device from './Device';
 import GrabBag from './GrabBag';
 
@@ -67,8 +68,8 @@ function App () {
     .then(response => {
       setDeviceOffset((deviceOffset) => deviceOffset + numDevices);
 
-      console.log("Response for fetch " + numDevices + " devices:");
-      console.log(response);
+      //console.log("Response for fetch " + numDevices + " devices:");
+      //console.log(response);
       
         // filter out undefined elements
         response.filter(e => e !== undefined);
@@ -80,31 +81,6 @@ function App () {
       
     });
   }
-
-  React.useEffect(() => {
-    // Will fetch one device and set state with that device
-    // Trying to make a custom device object
-    
-    fetchAndSetOneDevice();
-    //fetchAndSetDevices(5);
-
-
-    window.addEventListener("scroll", handleScroll); // attaching scroll event listener
-
-    // Adding arrays and offset to local storage
-    window.localStorage.setItem('storedDevices', JSON.stringify(deviceList));
-    window.localStorage.setItem('storedGrabBag', JSON.stringify(grabBagList));
-    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
-
-  /*   console.log("Grab Bag List:");
-    console.log(grabBagList);*/
-    console.log("Device List:");
-    console.log(deviceList); 
-
-
-  }, [keepLoading, grabBagList]); 
-
-
 
   function handleOnDragEnd (result) {
     // If we drag something to a non-droppable area, just return
@@ -123,22 +99,51 @@ function App () {
       // filter out the movedDevice from the deviceList.
       setDeviceList((deviceList) => deviceList.filter(e => e?.wikiid !== movedDevice.wikiid))
     }
-
   }
+
+  function clearStorage () {
+    localStorage.clear();
+    console.log("Local Storage Cleared");
+  }
+
+  React.useEffect(() => {
+    // Will fetch one device and set state with that device
+    // Trying to make a custom device object
+    
+    fetchAndSetOneDevice();
+    // fetchAndSetDevices(5);
+
+
+    window.addEventListener("scroll", handleScroll); // attaching scroll event listener
+
+    // Adding arrays and offset to local storage
+    window.localStorage.setItem('storedDevices', JSON.stringify(deviceList));
+    window.localStorage.setItem('storedGrabBag', JSON.stringify(grabBagList));
+    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
+
+  /*   console.log("Grab Bag List:");
+    console.log(grabBagList);*/
+    //console.log("Device List:");
+    //console.log(deviceList); 
+
+
+  }, [keepLoading, grabBagList]); 
+
+
 
   return (
     <>
+      <Button onClick = {clearStorage}>CLEAR LOCAL</Button>
       <DragDropContext onDragEnd = {handleOnDragEnd}>
         <GrabBag {...[grabBagList]}></GrabBag>
           <Droppable droppableId='devices'>
             {(provided) => (
               <span {...provided.droppableProps} ref = {provided?.innerRef}>
-                <ul className = "deviceList">
-                <h1>Here's the List of Devices</h1>
+                <ul>
+                <h3>Here's the List of Devices</h3>
                   {deviceList.length ? 
                     (deviceList.map((deviceEntry, index) => {
-                      // console.log("In Mapping Function");
-                      // console.log(deviceList);
+                      console.log("Device Mapping:");
                       return (
                         <Draggable key = {deviceEntry?.wikiid} draggableId = {JSON.stringify(deviceEntry?.wikiid)} index = {index}>
                           {(provided) => (
@@ -153,6 +158,7 @@ function App () {
                     }))
                   : "No Items Loaded Yet"}
                 </ul>
+                {provided.placeholder}
               </span>
             )}
           </Droppable>
