@@ -14,8 +14,7 @@ function Device (props) {
     // Need to have a temporary value in the img while the object loads?
     // Did this with the question mark in device.image?.standard.
     // I think the ? mark means that it will only load the .standard if there's something to load
-    console.log("This Device got the following props:")
-    console.log(props)
+
     return (
         <div className = "device">
             <img src = {props?.image?.standard} alt = "Error Loading Device"></img>

@@ -13,14 +13,12 @@ function DeviceGrid (props) {
     // I think that the first is better, since that way all the row logic
     // is happening here, the other objects/fcns don't need to worry abt it
 
-    // Could slice up the array into slices of 4, and make a new array of the slices
-    // Then do a double map fcn. Map into each slice, create a row, then map to create
-    // the devices in that row. 
-    var deviceProps = props;
+    
+    //var deviceProps = props;
 
     // This method converts props (an object containing objects)
     //   into an array of objects
-        var devices = Object.keys(props).map(key => {
+    var devices = Object.keys(props).map(key => {
         return props[key];
     })
 
@@ -28,32 +26,36 @@ function DeviceGrid (props) {
     var currentSlice = [];
     const numColumns = 4;
 
-    /* console.log("Unsliced GB Devices: ");
-    console.log(devices); */
+    // Could slice up the array into slices of 4, and make a new array of the slices
+    // Then do a double map fcn. Map into each slice, create a row, then map to create
+    // the devices in that row. 
 
     if (devices?.length) {
         for (var i = 0; i < devices.length; i += numColumns) {
-            
             currentSlice = devices.slice(i, i + numColumns);
             slicedDevices.push(currentSlice);
         }
     }
-    i = 0;
+    
+    // Creating indices for row, columns, and draggable objects
+    var rowIndex = 0;
+    var colIndex = 0;
+    var draggableIndex = 0;
 
     return (
         <Container className = "deviceRows">
             {slicedDevices?.length ? 
             (slicedDevices.map(slice => {
-                {console.log("Current Slice:")}
-                {console.log(slice)}
+                //{console.log("Current Slice:")}
+                //{console.log(slice)}
                 return (
-                    <Row key = {i++}>
+                    <Row key = {rowIndex++}>
                         {slice.map((deviceEntry) => {
-                            {console.log("Current Device to Load:")}
-                            {console.log(deviceEntry)}
+                            //{console.log("Current Device to Load:")}
+                            //{console.log(deviceEntry)}
                             return (
-                                <Col key = {deviceEntry?.wikiid}>
-                                    <Draggable draggableId = {JSON.stringify(deviceEntry?.wikiid)}>
+                                <Col key = {colIndex++}>
+                                    <Draggable  key = {deviceEntry?.wikiid} draggableId = {JSON.stringify(deviceEntry?.wikiid)} index = {draggableIndex++}>
                                         {(provided) => (
                                             <div {...provided.draggableProps} {...provided.dragHandleProps} ref = {provided.innerRef}>
                                                 <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>

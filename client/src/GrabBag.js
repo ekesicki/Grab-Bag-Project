@@ -14,11 +14,10 @@ function GrabBag (props) {
             {(provided) => (
                 <span className = "GrabBag" {...provided.droppableProps} ref = {provided?.innerRef}>
                     <img src = {"https://www.pngmart.com/files/7/School-Bag-PNG-Image.png"} 
-                        alt = "Error Loading Bag"
+                        alt = "Error Loading Bag Art"
                         style = {{width: 200, height: 200}}>
                     </img>
-                    <h3> Here are the Grab Bag Devices</h3>
-                    { console.log("GrabBag Devices:")}
+                    <h3>Grab Bag Devices</h3>
                     
                     <DeviceGrid {...grabBagList}></DeviceGrid>
                 {provided.placeholder}

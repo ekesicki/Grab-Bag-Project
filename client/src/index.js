@@ -83,8 +83,8 @@ function App () {
   }
 
   function handleOnDragEnd (result) {
-    // If we drag something to a non-droppable area, just return
-    if (!result.destination) return;
+    // If we drag something to a non-droppable area or want to move it out of the grab bag, just return
+    if (!result.destination || result.destination.droppableId === "devicesDroppable") return;
 
     // If we drop into the grab bag, add the device to the bag list and remove it from the device list
     if (result.destination.droppableId = "grabBag") {
@@ -108,7 +108,7 @@ function App () {
     // Trying to make a custom device object
     
     // fetchAndSetOneDevice();
-    fetchAndSetDevices(5);
+    fetchAndSetDevices(2);
 
 
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
@@ -124,19 +124,21 @@ function App () {
 
   return (
     <>
-      <Button onClick = {clearStorage}>CLEAR LOCAL</Button>
+      <Button onClick = {clearStorage}>Clear Local Storage</Button>
 
       <DragDropContext onDragEnd = {handleOnDragEnd}>
-        <GrabBag {...[grabBagList]}></GrabBag>
-        <Droppable droppableId="devicesDroppable">
-          {(provided) => (
-            <span {...provided.droppableProps} ref = {provided?.innerRef}>
-              <h3>Here's the List of Devices</h3>
-                <DeviceGrid {...deviceList}></DeviceGrid>
-              {provided.placeholder}
-            </span>
-          )}
-        </Droppable>
+        <div className="d-flex justify-content-between">
+          <GrabBag {...[grabBagList]}></GrabBag>
+          <Droppable droppableId="devicesDroppable">
+            {(provided) => (
+              <span {...provided.droppableProps} ref = {provided?.innerRef}>
+                <h3>Here's the List of Devices</h3>
+                  <DeviceGrid {...deviceList}></DeviceGrid>
+                {provided.placeholder}
+              </span>
+            )}
+          </Droppable>
+        </div>
       </DragDropContext>
     </>
   );
