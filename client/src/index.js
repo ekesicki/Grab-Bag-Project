@@ -132,7 +132,7 @@ function App () {
           <Droppable droppableId="devicesDroppable">
             {(provided) => (
               <span {...provided.droppableProps} ref = {provided?.innerRef}>
-                <h3>Here's the List of Devices</h3>
+                <h3>Devices</h3>
                   <DeviceGrid {...deviceList}></DeviceGrid>
                 {provided.placeholder}
               </span>
