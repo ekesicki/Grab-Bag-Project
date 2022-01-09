@@ -1,38 +1,42 @@
 import React, { useEffect } from "react";
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import Device from './Device';
+import DeviceGrid from './DeviceGrid';
 
 // This will be the Grab Bag to store devices
-// Eventually needs a way to store the devices it has
-
 
 function GrabBag (props) {
+
+    const grabBagList = props[0];
 
     return (
         <Droppable droppableId="grabBag">
             {(provided) => (
-                <span className = "grabBag" {...provided.droppableProps} ref = {provided?.innerRef}>
+                <span className = "GrabBag" {...provided.droppableProps} ref = {provided?.innerRef}>
                     <img src = {"https://www.pngmart.com/files/7/School-Bag-PNG-Image.png"} 
-                        alt = "Error Loading Bag"
+                        alt = "Error Loading Bag Art"
                         style = {{width: 200, height: 200}}>
                     </img>
-                    <li>Grab Bag</li>   
+                    <h3>Grab Bag Devices</h3>
+                    
+                    <DeviceGrid {...grabBagList}></DeviceGrid>
+                {provided.placeholder}
                 </span>
             )}
         </Droppable>
     );
 }
 
-/* // Logic for loading a list of items from the main app
-
-{props.grabBagList.length ? 
-    (props.grabBagList.map(deviceEntry => {
-        // console.log("In Grab Bag Mapping Function");
-        // console.log(grabBagList);
-        return <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
-    }))
-    : "No Items In Bag Yet"}
-*/
+               /* { <h1>Here's the List of Grab Bag Devices</h1>
+                    {grabBagList?.length ? 
+                        (grabBagList.map(deviceEntry => {
+                            // console.log("In Grab Bag Mapping Function");
+                            // console.log(grabBagList);
+                            return (
+                                <li>
+                                    <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
+                                </li>)
+                        }))
+                        : "Bag Empty!"} } */
 
 export default GrabBag;
