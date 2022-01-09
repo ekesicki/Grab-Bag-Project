@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
 import Device from './Device';
 import GrabBag from './GrabBag';
+import DeviceGrid from './DeviceGrid';
 
 
 
@@ -78,7 +79,6 @@ function App () {
         setDeviceList((deviceList) => [...deviceList, ...response]);
 
         setKeepLoading((keepLoading) => false);
-      
     });
   }
 
@@ -86,14 +86,11 @@ function App () {
     // If we drag something to a non-droppable area, just return
     if (!result.destination) return;
 
-    // If we drop into the grab bag, add the device to the bag list 
-    // and remove it from the device list
+    // If we drop into the grab bag, add the device to the bag list and remove it from the device list
     if (result.destination.droppableId = "grabBag") {
       const currentDevices = Array.from(deviceList);
-      //console.log(currentDevices);
       const movedDevice = currentDevices.find(e => e?.wikiid === parseInt(result.draggableId));
-      //console.log("Moved Device:");
-      //console.log(movedDevice);
+
       setGrabBagList((grabBagList) => [...grabBagList, movedDevice]);
 
       // filter out the movedDevice from the deviceList.
@@ -110,8 +107,8 @@ function App () {
     // Will fetch one device and set state with that device
     // Trying to make a custom device object
     
-    fetchAndSetOneDevice();
-    // fetchAndSetDevices(5);
+    // fetchAndSetOneDevice();
+    fetchAndSetDevices(5);
 
 
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
@@ -121,12 +118,6 @@ function App () {
     window.localStorage.setItem('storedGrabBag', JSON.stringify(grabBagList));
     window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
 
-  /*   console.log("Grab Bag List:");
-    console.log(grabBagList);*/
-    //console.log("Device List:");
-    //console.log(deviceList); 
-
-
   }, [keepLoading, grabBagList]); 
 
 
@@ -134,12 +125,25 @@ function App () {
   return (
     <>
       <Button onClick = {clearStorage}>CLEAR LOCAL</Button>
+
       <DragDropContext onDragEnd = {handleOnDragEnd}>
         <GrabBag {...[grabBagList]}></GrabBag>
-          <Droppable droppableId='devices'>
-            {(provided) => (
-              <span {...provided.droppableProps} ref = {provided?.innerRef}>
-                <ul>
+        <Droppable droppableId="devicesDroppable">
+          {(provided) => (
+            <span {...provided.droppableProps} ref = {provided?.innerRef}>
+              <h3>Here's the List of Devices</h3>
+                <DeviceGrid {...deviceList}></DeviceGrid>
+              {provided.placeholder}
+            </span>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
+  );
+
+/*
+  Old Method of displaying deviceList Devices
+              <ul>
                 <h3>Here's the List of Devices</h3>
                   {deviceList.length ? 
                     (deviceList.map((deviceEntry, index) => {
@@ -158,16 +162,6 @@ function App () {
                     }))
                   : "No Items Loaded Yet"}
                 </ul>
-                {provided.placeholder}
-              </span>
-            )}
-          </Droppable>
-      </DragDropContext>
-    </>
-  );
-
-/*
-  
 */
 }
   

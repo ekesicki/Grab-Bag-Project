@@ -1,6 +1,7 @@
 import React from "react";
 import { Draggable } from 'react-beautiful-dnd';
 import { Container, Row, Col, Card} from 'react-bootstrap';
+//import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import Device from './Device';
 
@@ -25,7 +26,7 @@ function DeviceGrid (props) {
 
     var slicedDevices = [];
     var currentSlice = [];
-    const numColumns = 3;
+    const numColumns = 4;
 
     /* console.log("Unsliced GB Devices: ");
     console.log(devices); */
@@ -52,15 +53,23 @@ function DeviceGrid (props) {
                             {console.log(deviceEntry)}
                             return (
                                 <Col key = {deviceEntry?.wikiid}>
-                                    <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
+                                    <Draggable draggableId = {JSON.stringify(deviceEntry?.wikiid)}>
+                                        {(provided) => (
+                                            <div {...provided.draggableProps} {...provided.dragHandleProps} ref = {provided.innerRef}>
+                                                <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
+                                                {provided.placeholder}
+                                            </div>
+                                        )}
+                                    </Draggable>
                                 </Col>
                             )
                         })}
                     </Row>
                 )
             }))
-            : "Currently Empty - Drag some items in!"}
+            : "No Items"}
         </Container>
+                
     );
 }
 
