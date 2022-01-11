@@ -24,6 +24,8 @@ function App () {
 
   const [grabBagList, setGrabBagList] = React.useState(JSON.parse(window.localStorage.getItem('storedGrabBag')) || []);
 
+  const [windowFull, setWindowFull] = React.useState(false);
+
   //const [canScroll, setCanScroll] = React.useState(false);
 
   // handleScroll triggers when we scroll down the page
@@ -36,7 +38,6 @@ function App () {
     let windowBottomHeight = document.documentElement.offsetHeight;
 
     //console.log("scroll height: " + userScrollHeight);
-
     if (userScrollHeight >= windowBottomHeight) {
       setKeepLoading(true);
     } 
@@ -68,9 +69,6 @@ function App () {
     .then(r => r.json())
     .then(response => {
       setDeviceOffset((deviceOffset) => deviceOffset + numDevices);
-
-      //console.log("Response for fetch " + numDevices + " devices:");
-      //console.log(response);
       
         // filter out undefined elements
         response.filter(e => e !== undefined);
@@ -103,12 +101,25 @@ function App () {
     console.log("Local Storage Cleared");
   }
 
-  React.useEffect(() => {
-    // Will fetch one device and set state with that device
-    // Trying to make a custom device object
+  const loadDevices = React.useEffect(() => {
+    // Will fetch one devices and set states
     
     // fetchAndSetOneDevice();
-    fetchAndSetDevices(2);
+
+    fetchAndSetDevices(8);
+    /*
+    var windowHeightPostLoad = window.outerHeight;
+    
+    if (windowFull === false ) {
+      fetchAndSetDevices(3);
+      windowHeightPostLoad = window.outerHeight;
+
+      if (windowHeightPreLoad < windowHeightPostLoad) {
+        setWindowFull((windowFull) => true);
+      }
+    }
+    */
+
 
 
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
@@ -118,7 +129,8 @@ function App () {
     window.localStorage.setItem('storedGrabBag', JSON.stringify(grabBagList));
     window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
 
-  }, [keepLoading, grabBagList]); 
+  }, [keepLoading]); 
+
 
 
 
