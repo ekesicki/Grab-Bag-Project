@@ -24,6 +24,8 @@ function App () {
 
   const [grabBagList, setGrabBagList] = React.useState(JSON.parse(window.localStorage.getItem('storedGrabBag')) || []);
 
+  const [windowFull, setWindowFull] = React.useState(false);
+
   //const [canScroll, setCanScroll] = React.useState(false);
 
   // handleScroll triggers when we scroll down the page
@@ -36,14 +38,12 @@ function App () {
     let windowBottomHeight = document.documentElement.offsetHeight;
 
     //console.log("scroll height: " + userScrollHeight);
-
     if (userScrollHeight >= windowBottomHeight) {
       setKeepLoading(true);
     } 
   };
 
 
-  // moving back to fetch.then.then notation, starting with just one device
   const fetchAndSetOneDevice = async() => {
     const requestAddress = 
         "https://www.ifixit.com/api/2.0/wikis/CATEGORY?offset=" + deviceOffset + "&limit=1";
@@ -68,16 +68,13 @@ function App () {
     .then(r => r.json())
     .then(response => {
       setDeviceOffset((deviceOffset) => deviceOffset + numDevices);
-
-      //console.log("Response for fetch " + numDevices + " devices:");
-      //console.log(response);
       
         // filter out undefined elements
         response.filter(e => e !== undefined);
 
         // Add all devices to the deviceList in one call
         setDeviceList((deviceList) => [...deviceList, ...response]);
-
+        //if ()
         setKeepLoading((keepLoading) => false);
     });
   }
@@ -102,13 +99,43 @@ function App () {
     localStorage.clear();
     console.log("Local Storage Cleared");
   }
+  /* Multiple useEffects
+  const onLoad = React.useEffect(() => {
+    // fetch and load devices until page is full
+    fetchAndSetDevices(20);
+    window.addEventListener("scroll", handleScroll);
 
-  React.useEffect(() => {
-    // Will fetch one device and set state with that device
-    // Trying to make a custom device object
+  }, []);
+
+  const onScroll = React.useEffect(() => {
+    // fetch more devices when user scrolls 
+    fetchAndSetDevices(4)
+    window.localStorage.setItem('storedDevices', JSON.stringify(deviceList));
+    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
+
+  }, [keepLoading]);
+
+  const onGrabBagUpdate = React.useEffect(() => {
+    // Adding arrays and offset to local storage
+
+    window.localStorage.setItem('storedGrabBag', JSON.stringify(grabBagList));
+    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
+  }, [deviceList, grabBagList]);
+*/
+
+  // Load, Save, and Scroll
+  const loadSaveAndScroll = React.useEffect(() => {
+    // Will fetch devices and load stored states
+    // when we scroll to the bottom or add something to the bag
     
-    // fetchAndSetOneDevice();
-    fetchAndSetDevices(2);
+    // if there's nothing loaded, load enough devices to fill the page
+    // otherwise, just load a few more.
+    if (deviceOffset === 0) {
+      fetchAndSetDevices(24);
+    }
+    else {
+      fetchAndSetDevices(4);
+    }
 
 
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
@@ -119,6 +146,7 @@ function App () {
     window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
 
   }, [keepLoading, grabBagList]); 
+  
 
 
 
