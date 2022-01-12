@@ -131,7 +131,7 @@ function App () {
     // if there's nothing loaded, load enough devices to fill the page
     // otherwise, just load a few more.
     if (deviceOffset === 0) {
-      fetchAndSetDevices(20);
+      fetchAndSetDevices(24);
     }
     else {
       fetchAndSetDevices(4);
