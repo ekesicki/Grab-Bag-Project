@@ -160,7 +160,11 @@ function App () {
           <Droppable droppableId="devicesDroppable">
             {(provided) => (
               <span {...provided.droppableProps} ref = {provided?.innerRef}>
-                <h3>Devices</h3>
+                <img src ={"https://images.globalindustrial.com/images/pd/651319.jpg?t=1642057931000"}
+                    alt = "Error Loading Device Art"
+                    style = {{width: 200, height: 200}}>
+                </img>
+                <h3>Devices - drag some over to the Grab Bag side!</h3>
                   <DeviceGrid {...deviceList}></DeviceGrid>
                 {provided.placeholder}
               </span>
@@ -171,28 +175,6 @@ function App () {
     </>
   );
 
-/*
-  Old Method of displaying deviceList Devices
-              <ul>
-                <h3>Here's the List of Devices</h3>
-                  {deviceList.length ? 
-                    (deviceList.map((deviceEntry, index) => {
-                      console.log("Device Mapping:");
-                      return (
-                        <Draggable key = {deviceEntry?.wikiid} draggableId = {JSON.stringify(deviceEntry?.wikiid)} index = {index}>
-                          {(provided) => (
-                            <div {...provided.draggableProps} {...provided.dragHandleProps} ref = {provided.innerRef}>
-                              <li>
-                                <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
-                              </li>
-                            </div>
-                          )}
-                        </Draggable>
-                      )
-                    }))
-                  : "No Items Loaded Yet"}
-                </ul>
-*/
 }
   
 ReactDOM.render(

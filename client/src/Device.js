@@ -18,7 +18,7 @@ function Device (props) {
     return (
         <div className = "device">
             <img src = {props?.image?.standard} alt = "Error Loading Device"></img>
-            <label key = {props?.wikiid} fontWeight = "bold" display = "block">
+            <label key = {props?.wikiid} style = {{fontWeight: "bold",  display: "block"}}>
                 {props?.display_title}
             </label>
         </div> 
