@@ -12,10 +12,11 @@ Usage:
 Devices are displayed as a list of images with labels. You can drag devices onto the grab bag 
 side to store them there. Items stored in the grab bag will be remembered on refresh.
 
-You can also check what items are in the grab bag and what devices have been loaded in Local Storage 
-under the Application tab in the Inspect window. 
+You can also check what items are in the grab bag and what devices have been loaded in Local Storage under the Application tab in the Inspect window. 
 
-You can click the Clear Local Storage button to clear local storage and reload the page to start fresh.
+You can click the Clear Local Storage button to clear local storage. Reloading the page will
+then reset you to no objects in the bag.
 
 Known Issues:
-1. Depending on monitor size, program might not load enough items to allow user to scroll
+1. Cards can look misaligned in some instances, depending on screen size and how many items
+    have been loaded

@@ -17,7 +17,7 @@ function GrabBag (props) {
                         alt = "Error Loading Bag Art"
                         style = {{width: 200, height: 200}}>
                     </img>
-                    <h3>Grab Bag Devices</h3>
+                    <h3>Grab Bag</h3>
                     
                     <DeviceGrid {...grabBagList}></DeviceGrid>
                 {provided.placeholder}
@@ -27,16 +27,5 @@ function GrabBag (props) {
     );
 }
 
-               /* { <h1>Here's the List of Grab Bag Devices</h1>
-                    {grabBagList?.length ? 
-                        (grabBagList.map(deviceEntry => {
-                            // console.log("In Grab Bag Mapping Function");
-                            // console.log(grabBagList);
-                            return (
-                                <li>
-                                    <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
-                                </li>)
-                        }))
-                        : "Bag Empty!"} } */
 
 export default GrabBag;
