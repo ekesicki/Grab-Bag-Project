@@ -14,8 +14,6 @@ function DeviceGrid (props) {
     // is happening here, the other objects/fcns don't need to worry abt it
 
     
-    //var deviceProps = props;
-
     // This method converts props (an object containing objects)
     //   into an array of objects
     var devices = Object.keys(props).map(key => {
@@ -46,13 +44,9 @@ function DeviceGrid (props) {
         <Container className = "deviceRows">
             {slicedDevices?.length ? 
             (slicedDevices.map(slice => {
-                //{console.log("Current Slice:")}
-                //{console.log(slice)}
                 return (
                     <Row key = {rowIndex++}>
                         {slice.map((deviceEntry) => {
-                            //{console.log("Current Device to Load:")}
-                            //{console.log(deviceEntry)}
                             return (
                                 <Col key = {colIndex++}>
                                     <Draggable  key = {deviceEntry?.wikiid} draggableId = {JSON.stringify(deviceEntry?.wikiid)} index = {draggableIndex++}>

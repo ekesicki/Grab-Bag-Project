@@ -24,12 +24,4 @@ function Device (props) {
     );
 }
 
-/*
-        <div className = "device">
-            <img src = {props?.image?.standard} alt = "Error Loading Device"></img>
-            <label key = {props?.wikiid} style = {{fontWeight: "bold",  display: "block"}}>
-                {props?.display_title}
-            </label>
-        </div> 
-*/
 export default Device;

@@ -27,16 +27,5 @@ function GrabBag (props) {
     );
 }
 
-               /* { <h1>Here's the List of Grab Bag Devices</h1>
-                    {grabBagList?.length ? 
-                        (grabBagList.map(deviceEntry => {
-                            // console.log("In Grab Bag Mapping Function");
-                            // console.log(grabBagList);
-                            return (
-                                <li>
-                                    <Device {...deviceEntry} key = {deviceEntry?.wikiid}></Device>
-                                </li>)
-                        }))
-                        : "Bag Empty!"} } */
 
 export default GrabBag;

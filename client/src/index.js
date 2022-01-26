@@ -24,9 +24,8 @@ function App () {
 
   const [grabBagList, setGrabBagList] = React.useState(JSON.parse(window.localStorage.getItem('storedGrabBag')) || []);
 
-  const [windowFull, setWindowFull] = React.useState(false);
 
-  //const [canScroll, setCanScroll] = React.useState(false);
+
 
   // handleScroll triggers when we scroll down the page
   //   It calculates if we have scrolled past the bottom of the page
@@ -44,21 +43,6 @@ function App () {
   };
 
 
-  const fetchAndSetOneDevice = async() => {
-    const requestAddress = 
-        "https://www.ifixit.com/api/2.0/wikis/CATEGORY?offset=" + deviceOffset + "&limit=1";
- 
-    fetch(requestAddress)
-    .then(r => r.json())
-    .then(response => {
-      setDeviceOffset((deviceOffset) => deviceOffset + 1);
-
-      if (response[0] !== undefined) {
-        setDeviceList((deviceList) => [...deviceList, response[0]]);
-      }
-      setKeepLoading((keepLoading) => false);
-    });
-  }
 
   const fetchAndSetDevices = async(numDevices) => {
     const requestAddress = 
@@ -103,39 +87,6 @@ function App () {
   }
 
 
-  // Multiple useEffects 
-  /*
-  const onLoad = React.useEffect(() => {
-    // fetch and load devices until page is full
-    fetchAndSetDevices(20);
-    window.addEventListener("scroll", handleScroll);
-
-  }, []);
-
-  const onScroll = React.useEffect(() => {
-    // fetch more devices when user scrolls 
-    fetchAndSetDevices(4)
-    window.localStorage.setItem('storedDevices', JSON.stringify(deviceList));
-    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
-
-  }, [keepLoading]);
-
-  const onDeviceUpdate = React.useEffect(() => {
-    // fetch more devices when user scrolls 
-    fetchAndSetDevices(4)
-    window.localStorage.setItem('storedDevices', JSON.stringify(deviceList));
-    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
-
-  }, [deviceList]);
-
-  const onGrabBagUpdate = React.useEffect(() => {
-    // Adding arrays and offset to local storage
-
-    window.localStorage.setItem('storedGrabBag', JSON.stringify(grabBagList));
-    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
-  }, [deviceList, grabBagList]);
-*/
-
   // Load, Save, and Scroll 
   
   const loadSaveAndScroll = React.useEffect(() => {
@@ -151,10 +102,8 @@ function App () {
     // using standard size images, 255 pixels tall. 4 images per row
     // So we want (window height / 255) * 4
     
-    //console.log("Fetching " + numDevicesToFetch + " devices");
 
     fetchAndSetDevices(Math.round((window.innerHeight / 255) * 2));
-    console.log("Fetching " + Math.round((window.innerHeight / 255) * 2) + " devices")
 
 
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
