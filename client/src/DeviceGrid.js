@@ -24,7 +24,7 @@ function DeviceGrid (props) {
 
     var slicedDevices = [];
     var currentSlice = [];
-    const numColumns = 4;
+    const numColumns = 6;
 
     // Could slice up the array into slices of 4, and make a new array of the slices
     // Then do a double map fcn. Map into each slice, create a row, then map to create
