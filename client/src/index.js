@@ -81,7 +81,9 @@ function App () {
 
   function handleOnDragEnd (result) {
     // If we drag something to a non-droppable area or want to move it out of the grab bag, just return
-    if (!result.destination || result.destination.droppableId === "devicesDroppable") return;
+    if (!result.destination || result.destination.droppableId === "devicesDroppable" ) {
+      return;
+    }
 
     // If we drop into the grab bag, add the device to the bag list and remove it from the device list
     if (result.destination.droppableId = "grabBag") {
@@ -99,7 +101,10 @@ function App () {
     localStorage.clear();
     console.log("Local Storage Cleared");
   }
-  /* Multiple useEffects
+
+
+  // Multiple useEffects 
+  /*
   const onLoad = React.useEffect(() => {
     // fetch and load devices until page is full
     fetchAndSetDevices(20);
@@ -115,6 +120,14 @@ function App () {
 
   }, [keepLoading]);
 
+  const onDeviceUpdate = React.useEffect(() => {
+    // fetch more devices when user scrolls 
+    fetchAndSetDevices(4)
+    window.localStorage.setItem('storedDevices', JSON.stringify(deviceList));
+    window.localStorage.setItem('currentOffset', JSON.stringify(deviceOffset));
+
+  }, [deviceList]);
+
   const onGrabBagUpdate = React.useEffect(() => {
     // Adding arrays and offset to local storage
 
@@ -123,19 +136,25 @@ function App () {
   }, [deviceList, grabBagList]);
 */
 
-  // Load, Save, and Scroll
+  // Load, Save, and Scroll 
+  
   const loadSaveAndScroll = React.useEffect(() => {
     // Will fetch devices and load stored states
     // when we scroll to the bottom or add something to the bag
     
     // if there's nothing loaded, load enough devices to fill the page
     // otherwise, just load a few more.
-    if (deviceOffset === 0) {
-      fetchAndSetDevices(24);
-    }
-    else {
-      fetchAndSetDevices(4);
-    }
+    // Can't use an if statement, otherwise the useEffect will run twice
+    // and the fetches will execute in parallel, grabbing the same devices
+
+    // Maybe try to calculate how many images will load 
+    // using standard size images, 255 pixels tall. 4 images per row
+    // So we want (window height / 255) * 4
+    
+    //console.log("Fetching " + numDevicesToFetch + " devices");
+
+    fetchAndSetDevices(Math.round((window.innerHeight / 255) * 2));
+    console.log("Fetching " + Math.round((window.innerHeight / 255) * 2) + " devices")
 
 
     window.addEventListener("scroll", handleScroll); // attaching scroll event listener
@@ -152,7 +171,7 @@ function App () {
 
   return (
     <>
-      <Button onClick = {clearStorage}>Clear Local Storage</Button>
+      <Button onClick = {clearStorage}>Clear All Devices</Button>
 
       <DragDropContext onDragEnd = {handleOnDragEnd}>
         <div className="d-flex justify-content-between">
